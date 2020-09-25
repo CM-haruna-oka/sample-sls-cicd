@@ -35,9 +35,6 @@ provider:
 
 custom:
   defaultStage: dev
-  pythonRequirements:
-    usePipenv: true
-    layer: true
   environments: ${file(./config/config.${opt:stage, self:custom.defaultStage}.yml)}
 
 package:
