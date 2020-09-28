@@ -12,7 +12,8 @@ def test_list_items():
     '''
     商品一覧の取得結果が一致する
     '''
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb',
+                              region_name='ap-northeast-1')
     dynamodb.create_table(
         TableName=ITEMS_TABLE_NAME,
         KeySchema=[
