@@ -11,7 +11,8 @@ logger.setLevel(log_level)
 
 def list_items(limit, last_key=None):
     logging.debug(limit)
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb',
+                              region_name='ap-northeast-1')
     TABLE_NAME = 'Items'
     table = dynamodb.Table(TABLE_NAME)
 
@@ -25,12 +26,13 @@ def list_items(limit, last_key=None):
 
     response = table.scan(**scan_kwargs)
     logging.info(response)
-    result = {'items': response.get('Items', [])}
+    result = response.get('Items', [])
 
     return result
 
 
-def validator_params(query):
+def validator_params(event):
+    query = event.get('queryStringParameters')
     DEFAULT_DATA_LIMIT = int(
         os.getenv('DEFAULT_DATA_LIMIT'))  # ページングのデフォルトかつ最大値
     try:
@@ -45,7 +47,11 @@ def validator_params(query):
     if limit >= DEFAULT_DATA_LIMIT or limit <= 0:
         limit = DEFAULT_DATA_LIMIT
 
-    return {'limit': limit}
+    params = {'limit': limit}
+    if query and query.get('lastKey'):
+        params['last_key'] = query['lastKey']
+
+    return params
 
 
 def handler(event, context):
@@ -53,8 +59,7 @@ def handler(event, context):
         logging.info(event)
         logging.info(context)
 
-        query = event.get('queryStringParameters')
-        params = validator_params(query)
+        params = validator_params(event)
 
         result = list_items(
             params['limit'], event.get('last_evaluated_key'))

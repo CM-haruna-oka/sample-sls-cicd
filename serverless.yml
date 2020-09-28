@@ -35,9 +35,9 @@ provider:
 
 custom:
   defaultStage: dev
-  pythonRequirements:
-    usePipenv: true
-    layer: true
+  profiles:
+    dev: sls-dev
+    stg: sls-stg
   environments: ${file(./config/config.${opt:stage, self:custom.defaultStage}.yml)}
 
 package:
@@ -64,6 +64,7 @@ functions:
             parameters:
               querystrings:
                 limit: false
+                lastKey: false
 
 resources:
   Resources:

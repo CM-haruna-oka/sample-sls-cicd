@@ -1,0 +1,11 @@
+{
+  "name": "sample-sls-cicd",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "pip3 install -r requirements.txt",
+    "test": "pytest"
+  }
+}
