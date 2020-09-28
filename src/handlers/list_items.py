@@ -11,7 +11,8 @@ logger.setLevel(log_level)
 
 def list_items(limit, last_key=None):
     logging.debug(limit)
-    dynamodb = boto3.resource('dynamodb')
+    dynamodb = boto3.resource('dynamodb',
+                              region_name='ap-northeast-1')
     TABLE_NAME = 'Items'
     table = dynamodb.Table(TABLE_NAME)
 
