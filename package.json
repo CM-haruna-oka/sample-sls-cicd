@@ -5,7 +5,7 @@
   "dependencies": {},
   "devDependencies": {},
   "scripts": {
-    "postinstall": "pip3 install pipenv && pipenv shell && pipenv install --dev",
+    "postinstall": "pip3 install -r requirements.txt",
     "test": "pytest"
   }
 }
